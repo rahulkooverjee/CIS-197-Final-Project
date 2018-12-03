@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <div id="container">
+    <head>
+      <title>Productiv</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+
+      <link rel="stylesheet" type="text/css" href="/static/styles/styles.css"/>
+      <!-- load scripts -->
+      <script src="/static/scripts/lib/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="/static/scripts/home.js"></script>
+    </head>
+
+    <body>
+      <h1 class="logo">Productiv</h1>
+      <p class="centered-text"> 
+        You're currently logged in as <%= user %>. Click <a href="/account/logout">here to logout.</a> <br>
+      </p>
+
+       <button type="button" class="btn btn-lg btn-primary custom-btn" id="add-task-button">
+          Add task
+       </button>
+
+      <!-- modal for adding new question -->
+      <div class="modal" style="display:none">
+        <div class="modal-area">
+          <br>
+          <h2 class="modal-title">Add a task</h2>
+          <form id="add-task-form">
+          <p class='login-input'>
+            Description
+          </p>
+          <input type="text" class ="form-control" name="description" id="description-input"/> <br/>
+          <p class='login-input'>
+            Deadline
+          </p>
+          <input type="date" class ="form-control" name="deadline" id="deadline-input"/> <br/>
+          <p class='login-input'>
+            Priority
+          </p>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-danger">
+              <input type="radio" name="priority" id="option1" value="High"> High
+            </label>
+            <label class="btn btn-warning active">
+              <input type="radio" name="priority" id="option2" value="Medium" checked> Medium
+            </label>
+            <label class="btn btn-success">
+              <input type="radio" name="priority" id="option3" value="Low"> Low
+            </label>
+          </div>
+          <br><br>
+          <p class='login-input'>
+            Category
+          </p>
+          <fieldset>
+            <p>
+               <select name="category" id = "myList">
+                 <option value = "School">School</option>
+                 <option value = "Work">Work</option>
+                 <option value = "Personal">Personal</option>
+               </select>
+            </p>
+          </fieldset>
+          <br>
+          <input type="submit" value="Add Task" class="btn btn-lg btn-info custom-btn" id='submit-task-button'/>
+          <button type="button" class="btn btn-lg btn-primary custom-btn" id="cancel-task-button"/>
+            Cancel
+          </button>
+          <p class="error-text" id="err-message">
+          <!-- Filled in IF there is an error -->
+          </p>
+        </form>
+        </div>
+      </div>
+
+      <h1>Tasks</h1>
+      <div id ="tasks" style="margin:auto;">
+      
+      </div>
+
+      <button type="button" class="btn btn-lg btn-primary custom-btn" id="testBtn"/>
+       Toggle Completion
+      </button>
+    </body>
+
+    <footer>
+      <p>
+        CIS 197 Final Project by Rahul Kooverjee
+      </p>
+    </footer>
+  </div>
+</html>

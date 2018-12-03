@@ -1,0 +1,16 @@
+{
+  "name": "rahulkoo-197-final-project",
+  "version": "1.0.0",
+  "description": "Rahul's 197 final project",
+  "author": "Rahul Kooverjee",
+  "dependencies": {
+    "bcrypt": "^3.0.2",
+    "body-parser": "^1.18.3",
+    "cookie-session": "^2.0.0-beta.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "mockgoose": "^7.3.5",
+    "mongoose": "^5.3.2",
+    "nodemon": "^1.18.4"
+  }
+}
