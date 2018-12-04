@@ -29,7 +29,7 @@
           <h2 class="modal-title">Add a task</h2>
           <form id="add-task-form">
           <p class='login-input'>
-            Description
+            Description*
           </p>
           <input type="text" class ="form-control" name="description" id="description-input"/> <br/>
           <p class='login-input'>
@@ -64,6 +64,10 @@
             </p>
           </fieldset>
           <br>
+          <p class='login-input'>
+            Collaborators <br> (separate emails by spaces)
+          </p>
+          <input type="text" class ="form-control" name="collaborators" id="users-input"/> <br/>
           <input type="submit" value="Add Task" class="btn btn-lg btn-info custom-btn" id='submit-task-button'/>
           <button type="button" class="btn btn-lg btn-primary custom-btn" id="cancel-task-button"/>
             Cancel
@@ -75,13 +79,33 @@
         </div>
       </div>
 
-      <h1>Tasks</h1>
-      <div id ="tasks" style="margin:auto;">
-      
+      <div class="modal-body row">
+        <div class="col-md-4">
+          <!-- First column -->
+          <h1>Previous Tasks</h1>
+          <div id ="previous-tasks" style="margin:auto;">
+          
+          </div>
+        </div>
+        <div class="col-md-4">
+          <!-- Second column -->
+          <h1>Today's Tasks</h1>
+          <div id ="today-tasks" style="margin:auto;">
+          
+          </div>
+        </div>
+        <div class="col-md-4">
+          <!-- Third column -->
+          <h1> Upcoming Tasks</h1>
+          <div id ="future-tasks" style="margin:auto;">
+          
+          </div>
+        </div>
       </div>
 
+
       <button type="button" class="btn btn-lg btn-primary custom-btn" id="testBtn"/>
-       Toggle Completion
+       TODO - THIS BUTTON IS TESTING
       </button>
     </body>
 

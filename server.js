@@ -1,3 +1,10 @@
+/*
+ * This is the main, runnable node application that sets up and creates a server for the project.
+ *
+ * Author: Rahul Kooverjee for his CIS 197 Final Project Fall 2018
+ *
+ */
+
 // Import various things...
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -5,7 +12,7 @@ var cookieSession = require('cookie-session');
 var path=require('path');
 var mongoose = require('mongoose');
 var Task = require('./models/task');
-
+var isAuthenticated = require('./middlewares/isAuthenticated');
 
 // Instantiate express app
 var app = express();
@@ -30,19 +37,27 @@ app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
+/*
+-----------------------------------------------------------------------------------------------------
+Routes 
+-----------------------------------------------------------------------------------------------------
+*/
 // set up routes
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // Get route for login / signup page, which shows by default
 app.get('/', function (req, res, next) {
-  res.render('index');
+  if (req.query.invalidAccess) {
+    res.render('index', { err: "Please login before accessing other URLs!" } );
+  } else {
+    res.render('index', { err: null } );
+  }
 });
 
 // Post route for login - to check if the credials match the DB and login if so
-app.get('/home', function (req, res, next) {
+app.get('/home', isAuthenticated, function (req, res, next) {
   res.render('home', {user: req.session.user});
 });
-
 
 // Access account routes
 var accountRoutes = require('./routes/account.js');
@@ -51,7 +66,6 @@ app.use('/account', accountRoutes);
 // Access api routes
 var apiRoutes = require('./routes/api.js');
 app.use('/api', apiRoutes);
-
 
 app.listen(process.env.PORT || 3000, function () {
   console.log('App listening on port ' + (process.env.PORT || 3000))

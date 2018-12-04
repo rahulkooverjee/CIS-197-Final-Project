@@ -7,7 +7,7 @@
       <link rel="stylesheet" type="text/css" href="/static/styles/styles.css"/>
       <!-- load scripts -->
       <script src="/static/scripts/lib/jquery.min.js"></script>
-      <script src="/static/scripts/login.js"></script>
+      <script src="/static/scripts/index.js"></script>
     </head>
 
     <body>
@@ -15,6 +15,12 @@
       <p class="centered-text"> 
         Productiv is the premier productivity manager. Manage your tasks with ease!
       </p>
+      <!-- Show message if user was redirected to sign in when trying to access another URL w/o authentication -->
+      <%if (err) { %>
+        <p class="error-text">
+          <%= err %>
+        </p>
+      <% } %>
       <div class='login-box'>
         <h2 class='form-title' id="form-title">Login</h2>
         <form class='login-signup-form' id="login-signup-form">
@@ -34,8 +40,11 @@
       </div>
 
       <p class="error-text" id="err-message">
-        <!-- Filled in IF there is an error -->
+        <!-- Filled in IF there is an error signing in -->
       </p>
+
+
+      
     </body>
 
     <footer>

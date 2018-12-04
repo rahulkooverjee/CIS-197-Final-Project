@@ -1,3 +1,16 @@
+/*
+ * Self explanatory - defines the CSS needed for the project
+ *
+ * Author: Rahul Kooverjee for his CIS 197 Final Project Fall 2018
+ *
+ */
+
+
+/*
+-----------------------------------------------------------------------------------------------------
+OVERRIDE SOME DEFAULT CSS AND BOOSTRAP STYLES
+-----------------------------------------------------------------------------------------------------
+*/
 body {
 	background-color: #eaf2ff;
 	margin: 0px;
@@ -6,19 +19,17 @@ body {
 	text-align: center;
 }
 
-/*
- * Override some bootstrap styles
- */
 .form-control {
 	width: 50%;
 	margin: auto;
 }
 
 
-
 /*
- * Styles to set up a footer that hugs the bottom elements I defined
- */
+-----------------------------------------------------------------------------------------------------
+STYLES TO SET UP A FOOTER THAT STICKS TO THE BOTTOM OF THE PAGE 
+-----------------------------------------------------------------------------------------------------
+*/
 .container {
    min-height:100%;
    position:relative;
@@ -46,8 +57,10 @@ footer {
 
 
 /*
- * Styles for elements I defined
- */
+-----------------------------------------------------------------------------------------------------
+STYLES FOR ELEMENTS I DEFINED MYSELF
+-----------------------------------------------------------------------------------------------------
+*/
 .logo {
 	text-align: center;
 	font-size: 60pt;
