@@ -1,118 +1,132 @@
 <!DOCTYPE html>
 <html>
-  <div id="container">
-    <head>
-      <title>Productiv</title>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+<div id="container">
+	<head>
+		<title>Productiv</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
 
-      <link rel="stylesheet" type="text/css" href="/static/styles/styles.css"/>
-      <!-- load scripts -->
-      <script src="/static/scripts/lib/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      <script src="/static/scripts/home.js"></script>
-    </head>
+		<link rel="stylesheet" type="text/css" href="/static/styles/styles.css"/>
+		<!-- load scripts -->
+		<script src="/static/scripts/lib/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="/static/scripts/home.js"></script>
+	</head>
 
-    <body>
-      <h1 class="logo">Productiv</h1>
-      <p class="centered-text"> 
-        You're currently logged in as <%= user %>. Click <a href="/account/logout">here to logout.</a> <br>
-      </p>
+	<body>
+		<div class="navbar">
+			<div class="navbar-header">
+				<h1 class="logo-header">Productiv</h1>
+			</div>
+			<center>
+				<div class="navbar-collapse collapse" id="navbar-main">
 
-       <button type="button" class="btn btn-lg btn-primary custom-btn" id="add-task-button">
-          Add task
-       </button>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/account/logout" class="navbar-text">Logout</a></li>
+					</ul>
+				</div>
+			</center>
+		</div>
+		<div class="modal-body row">
+			<div class="col-md-10">
+				<!-- First column -->
 
-      <!-- modal for adding new question -->
-      <div class="modal" style="display:none">
-        <div class="modal-area">
-          <br>
-          <h2 class="modal-title">Add a task</h2>
-          <form id="add-task-form">
-          <p class='login-input'>
-            Description*
-          </p>
-          <input type="text" class ="form-control" name="description" id="description-input"/> <br/>
-          <p class='login-input'>
-            Deadline
-          </p>
-          <input type="date" class ="form-control" name="deadline" id="deadline-input"/> <br/>
-          <p class='login-input'>
-            Priority
-          </p>
-          <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-danger">
-              <input type="radio" name="priority" id="option1" value="High"> High
-            </label>
-            <label class="btn btn-warning active">
-              <input type="radio" name="priority" id="option2" value="Medium" checked> Medium
-            </label>
-            <label class="btn btn-success">
-              <input type="radio" name="priority" id="option3" value="Low"> Low
-            </label>
-          </div>
-          <br><br>
-          <p class='login-input'>
-            Category
-          </p>
-          <fieldset>
-            <p>
-               <select name="category" id = "myList">
-                 <option value = "School">School</option>
-                 <option value = "Work">Work</option>
-                 <option value = "Personal">Personal</option>
-               </select>
-            </p>
-          </fieldset>
-          <br>
-          <p class='login-input'>
-            Collaborators <br> (separate emails by spaces)
-          </p>
-          <input type="text" class ="form-control" name="collaborators" id="users-input"/> <br/>
-          <input type="submit" value="Add Task" class="btn btn-lg btn-info custom-btn" id='submit-task-button'/>
-          <button type="button" class="btn btn-lg btn-primary custom-btn" id="cancel-task-button"/>
-            Cancel
-          </button>
-          <p class="error-text" id="err-message">
-          <!-- Filled in IF there is an error -->
-          </p>
-        </form>
-        </div>
-      </div>
+				<div class="tasks-box" id="tasks-box">
+					<div class="row header-row">
+						<h2 id="task-header"><b>Welcome <%= user %>. Here are your tasks.</b></h2>
+					</div>
 
-      <div class="modal-body row">
-        <div class="col-md-4">
-          <!-- First column -->
-          <h1>Previous Tasks</h1>
-          <div id ="previous-tasks" style="margin:auto;">
-          
-          </div>
-        </div>
-        <div class="col-md-4">
-          <!-- Second column -->
-          <h1>Today's Tasks</h1>
-          <div id ="today-tasks" style="margin:auto;">
-          
-          </div>
-        </div>
-        <div class="col-md-4">
-          <!-- Third column -->
-          <h1> Upcoming Tasks</h1>
-          <div id ="future-tasks" style="margin:auto;">
-          
-          </div>
-        </div>
-      </div>
+					<div class="row header-row">
+						<div class="col-md-4">
+							<input type="submit" value="Previous Tasks" class="btn btn-md btn-info task-toggle-btn" id='previous-task-button'/>
+						</div>
+						<div class="col-md-4">
+							<input type="submit" value="Today's Tasks" class="btn btn-md btn-info task-toggle-btn" id='today-task-button'/>
+						</div>
+						<div class="col-md-4">
+							<input type="submit" value="Future Tasks" class="btn btn-md btn-info task-toggle-btn" id='future-task-button'/>
+						</div>
+					</div>
+					<div id="task-item-div">
+						Loading...
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-2">
+				<!-- Second column -->
+				<button type="button" class="btn btn-lg btn-primary" style="width: 99%" id="add-task-button">
+					Add New Task
+				</button>
+			</div>
+		</div>
+	</div>
 
 
-      <button type="button" class="btn btn-lg btn-primary custom-btn" id="testBtn"/>
-       TODO - THIS BUTTON IS TESTING
-      </button>
-    </body>
 
-    <footer>
-      <p>
-        CIS 197 Final Project by Rahul Kooverjee
-      </p>
-    </footer>
-  </div>
+	<!-- modal for adding new question -->
+	<div class="modal" style="display:none">
+		<div class="modal-area">
+			<br>
+			<h2 class="modal-title">Add a task</h2>
+			<form id="add-task-form">
+				<p class='login-input'>
+					<b>Description*</b>
+				</p>
+				<input type="text" class ="form-control" name="description" id="description-input" placeholder="description" /> <br/>
+				<p class='login-input'>
+					<b>Deadline</b>
+				</p>
+				<input type="date" class ="form-control" name="deadline" id="deadline-input"/> <br/>
+				<p class='login-input'>
+					<b>Priority</b>
+				</p>
+				<div class="btn-group btn-group-toggle" data-toggle="buttons" id="test1">
+					<label class="btn btn-danger">
+						<input type="radio" name="priority" id="option1" value="High"> High
+					</label>
+					<label class="btn btn-warning active">
+						<input type="radio" name="priority" id="option2" value="Medium" checked> Medium
+					</label>
+					<label class="btn btn-success">
+						<input type="radio" name="priority" id="option3" value="Low"> Low
+					</label>
+				</div>
+				<br><br>
+				<p class='login-input'>
+					<b>Category</b>
+				</p>
+				<fieldset>
+					<p>
+						<select name="category" id = "category-input">
+							<option value = "School">School</option>
+							<option value = "Work">Work</option>
+							<option value = "Personal">Personal</option>
+						</select>
+					</p>
+				</fieldset>
+				<br>
+				<p class='login-input'>
+					<b>Collaborators</b> <br> (Enter each on a new line)
+				</p>
+				<textarea class="form-control status-input" id="collaborators-input" rows="3" style="resize:vertical;" placeholder="collaborators"></textarea>
+				<br>
+				<input type="submit" value="Add Task" class="btn btn-lg btn-info custom-btn" id='submit-task-button'/>
+				<button type="button" class="btn btn-lg btn-primary custom-btn" id="cancel-task-button"/>
+				Cancel
+			</button>
+			<p class="error-text" id="err-message">
+				<!-- Filled in IF there is an error -->
+			</p>
+		</form>
+	</div>
+</div>
+</body>
+
+<footer>
+	<p>
+		CIS 197 Final Project by Rahul Kooverjee
+	</p>
+</footer>
+</div>
 </html>
+

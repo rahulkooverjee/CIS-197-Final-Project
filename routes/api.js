@@ -24,6 +24,12 @@ var formatDateString = function(date) {
   return [year, month, day].join('-');
 }
 
+// Helper function that checks if an email is of the form something@domain.extension using a regular expression. 
+var validateEmail = function(email) {
+  var re = /\S+@\S+\.\S+/;
+  return re.test(String(email).toLowerCase());
+}
+
 /*
 -----------------------------------------------------------------------------------------------------
 Routes 
@@ -35,8 +41,17 @@ router.post('/addTask', isAuthenticated, function (req, res, next) {
   // Create an array of users, add the current user as well as any collaborators
   var users = [];
   users.push(req.session.user); 
-  var collaborators = req.body.collaborators.split(" ");
+  var collaborators = req.body.collaborators.split('\n');
+  // This is necessary since we don't want problems when the collaborators are empty
+  if (collaborators[0] == '') {
+    collaborators = []
+  }
   for (i in collaborators) {
+    // Invalid email format
+    if (!validateEmail(collaborators[i])) {
+      res.send({err: "Invalid collaborator email format: " + collaborators[i]}); 
+      return;
+    }
     users.push(collaborators[i])
   }
 
@@ -107,12 +122,19 @@ router.get('/getFutureTasks', isAuthenticated, function (req, res, next) {
   });
 });
 
-/*
------------------------------------------------------------------------------------------------------
-WORK IN PROGRSS ROUTES - TODO
------------------------------------------------------------------------------------------------------
-*/
-// TODO 
+// Route to delete a task
+router.post('/deleteTask', function (req, res, next) {
+  var taskId = req.body.tid;
+  Task.findByIdAndDelete(taskId, function (err) {
+    if (!err) {
+        res.json({ status: 'ok' });
+      } else {
+        // TODO ERROR HANDLING 
+        next(new Error('something went wrong: ' + err.message));
+    }
+  })
+});
+
 router.post('/toggleTaskCompletion', function (req, res, next) {
   Task.findById(req.body.tid, function (err, task) {
     task.complete = !task.complete;
@@ -126,6 +148,16 @@ router.post('/toggleTaskCompletion', function (req, res, next) {
     })
   })
 });
+
+/*
+-----------------------------------------------------------------------------------------------------
+WORK IN PROGRSS ROUTES - TODO
+-----------------------------------------------------------------------------------------------------
+*/
+// TODO 
+
+
+
 
 
 /*

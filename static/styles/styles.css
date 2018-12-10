@@ -22,6 +22,7 @@ body {
 .form-control {
 	width: 50%;
 	margin: auto;
+	font-size: 14pt;
 }
 
 
@@ -48,11 +49,11 @@ footer {
    position:absolute;
    font-size: 15pt;
    font-style: italic;
-   color: #315da5;
+   color: white;
    bottom:0;
    width:100%;
    height:30px;   /* Height of the footer */
-   background: #cfdff9;
+   background: #315da5;
 }
 
 
@@ -62,15 +63,18 @@ STYLES FOR ELEMENTS I DEFINED MYSELF
 -----------------------------------------------------------------------------------------------------
 */
 .logo {
+	margin-top: 0px;
+	background: #315da5;
 	text-align: center;
 	font-size: 60pt;
-	color: #315da5;
+	color: #ffc402;
 	font-style: italic;
 	font-weight: 700;
 }
 
 .form-title {
 	font-size: 35pt;
+
 }
 
 .login-input {
@@ -78,6 +82,7 @@ STYLES FOR ELEMENTS I DEFINED MYSELF
 }
 
 .centered-text {
+	margin-top: 20px;
 	text-align: center;
 	width: auto;
 	margin: auto;
@@ -126,4 +131,113 @@ STYLES FOR ELEMENTS I DEFINED MYSELF
 
 .modal-title {
 	font-size: 35pt;
+}
+
+/**
+* Task box
+*/ 
+.tasks-box {
+	background-color: white;
+	height: auto;
+	width: 97%;
+	margin: auto;
+	border: 2px solid #3b5998;
+	border-radius: 5px;
+	text-align: left;
+	padding-left:5px;
+	padding-right: 5px;
+	padding-bottom: 10px;
+}
+
+.header-row {
+	margin-left: 0px;
+	margin-right: 0px;
+	text-align: center;
+}
+
+.task-toggle-btn {
+	width: 90%;
+}
+
+.task-item {
+	background: #f9fbff;
+	height: auto;
+	width: 97%;
+	margin: auto;
+	border: 2px solid #8b9dc3;
+	border-radius: 5px;
+	text-align: left;
+	padding-top: 10px;
+	margin-botton:10px;
+	padding-top:5px;
+	padding-bototm:5px;
+	margin-top: 10px;
+} 
+
+/* TODO */
+
+.task-item-content {
+	margin-left: 5px;	
+	font-weight: 400;
+}
+
+.task-description {
+	margin-left: 5px;	
+	font-weight: 500;
+}
+.task-item-controls {
+	background: #dfe3ee;
+	padding: 5px;
+}
+
+.task-item-control-btn {
+}
+
+.task-next-prev-btn {
+	width: 15%;
+	margin-top: 10px;
+}
+
+.task-status {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	font-size: 12pt;
+}
+.task-status-row {
+	margin-left: -14px;
+}
+
+
+/**
+* Header styles
+*/
+.navbar {
+	height: 60px;
+	background-color: #315da5;
+	border-radius: 0px
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+	background-color: #264a84;
+	height: 58px;
+	color: #ffc402;
+	margin-top: 0px;
+}
+
+.logo-header {
+	text-align: left;
+	font-size: 35pt;
+	color: #ffc402;
+	font-style: italic;
+	font-weight: 700;
+	margin-left: 20px;
+	margin-top: 5px
+}
+
+.navbar-text {
+	margin-top: 2px;
+	font-size: 14pt; 
+	font-weight: 550;
+	color: #ffc402
 }
