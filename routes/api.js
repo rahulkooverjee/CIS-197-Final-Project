@@ -79,7 +79,7 @@ router.post('/addTask', isAuthenticated, function (req, res, next) {
   });
   dbTask.save(function (err, result) {
     if (!err) {
-      res.json({ status: 'ok' });
+      res.send({status: 'ok', task: result });
     } else {
       res.send({err: err.message}); 
     }
@@ -154,7 +154,6 @@ router.post('/toggleTaskCompletion', function (req, res, next) {
 WORK IN PROGRSS ROUTES - TODO
 -----------------------------------------------------------------------------------------------------
 */
-// TODO 
 
 
 

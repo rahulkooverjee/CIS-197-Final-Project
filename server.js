@@ -48,13 +48,13 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // Get route for login / signup page, which shows by default
 app.get('/', function (req, res, next) {
   if (req.query.invalidAccess) {
-    res.render('index', { err: "Please login before accessing other URLs!" } );
+    res.render('login', { err: "Please login before accessing other URLs!" } );
   } else {
-    res.render('index', { err: null } );
+    res.render('login', { err: null } );
   }
 });
 
-// Post route for login - to check if the credials match the DB and login if so
+// Get route for the home page
 app.get('/home', isAuthenticated, function (req, res, next) {
   res.render('home', {user: req.session.user});
 });

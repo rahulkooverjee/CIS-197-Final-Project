@@ -54,9 +54,43 @@
 			
 			<div class="col-md-2">
 				<!-- Second column -->
-				<button type="button" class="btn btn-lg btn-primary" style="width: 99%" id="add-task-button">
+				<button type="button" class="btn btn-lg btn-success" style="width: 97%" id="add-task-button">
 					Add New Task
 				</button>
+				<br><br>
+				<div class="tasks-box" id="tasks-box">
+					<h2>Filters</h2>
+					<i><b>NOTE</b> - filters stack on top of each other</i> <br><br>
+					Complete
+					<select id="complete-filter">
+						<option value="All">All</option>
+						<option value="Complete">Complete</option>
+						<option value="Incomplete">Incomplete</option>
+					</select>
+					<br><br>
+					Priority
+					<select id="priority-filter">
+						<option value="All">All</option>
+						<option value="High">High</option>
+						<option value="Medium">Medium</option>
+						<option value="Low">Low</option>
+					</select>
+					<br><br>
+					Category
+					<select id="category-filter">
+						<option value="All">All</option>
+						<option value="School">School</option>
+						<option value="Work">Work</option>
+						<option value="Personal">Personal</option>
+					</select>
+
+					<br><br>
+					<div style="text-align: center">
+						<button type="button" class="btn btn-md btn-primary" style="width: 75%;margin:auto" id="apply-filter-button">
+							Apply Filters
+						</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -122,11 +156,6 @@
 </div>
 </body>
 
-<footer>
-	<p>
-		CIS 197 Final Project by Rahul Kooverjee
-	</p>
-</footer>
 </div>
 </html>
 

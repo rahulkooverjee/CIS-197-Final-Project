@@ -17,11 +17,18 @@ $(document).ready(function () {
   // Get the tasks from the DB initially, then get them again every 5 seconds 
   getTasks()
   setDeadlineToToday();
- // setInterval(getTasks, 5000); TODO this
 
   // Set the max height of the tasks box to be 90% of the browser window size
   $('#tasks-box').css('max-height', $(window).height() * 0.85);
   $('#tasks-box').css('overflow', 'scroll');
+
+  // Booleans for filiters
+  var hasCompleteFilter = false;
+  var completeFilter = false;
+  var hasPriorityFilter = false;
+  var priorityFilter = '';
+  var hasCategoryFilter = false;
+  var categoryFilter = '';
 
 
   // Function that gets all tasks from the database - today's, previous, and future 
@@ -56,13 +63,17 @@ $(document).ready(function () {
 
   // Set the deadline input on the add task form to be today's date by default 
   function setDeadlineToToday() {
-    var now = new Date();
-    var month = (now.getMonth() + 1);               
-    var day = now.getDate();
+    var today = new Date();
+    $('#deadline-input').val(formatDateString(today));
+  }
+
+  function formatDateString(date) {
+    var month = (date.getMonth() + 1);               
+    var day = date.getDate();
     if (month < 10) month = "0" + month;
     if (day < 10) day = "0" + day;
-    var today = now.getFullYear() + '-' + month + '-' + day;
-    $('#deadline-input').val(today);
+    var dateString = date.getFullYear() + '-' + month + '-' + day;
+    return dateString
   }
 
   // Function to render tasks
@@ -72,9 +83,30 @@ $(document).ready(function () {
     if (mode === 'today') tasksBeingViewed = todaysTasks;
     if (mode === 'prev') tasksBeingViewed = previousTasks;
 
+    // If there's no tasks to show, show that message
+    if (!tasksBeingViewed || tasksBeingViewed.length == 0) {
+      var noTaskHtml = '<h2>No Tasks</h2>';
+      $('#task-item-div').html(noTaskHtml);
+      return;
+    }
+
     var htmlToShow = '';
     for (i in tasksBeingViewed) {
       var task = tasksBeingViewed[i];
+      // Process filiters 
+      // Complete filter 
+      if (hasCompleteFilter && task.complete !== completeFilter) {
+        continue;
+      }
+      // Priority filter 
+      if (hasPriorityFilter && task.priority !== priorityFilter) {
+        continue;
+      }
+      // Category filter 
+      if (hasCategoryFilter && task.category !== categoryFilter) {
+        continue;
+      }
+
       htmlToShow += '<div class="task-item" id="task-item-' + task._id + '">';
       htmlToShow += '<h4 class="task-description task-item-content">' + task.description + '</h4>';
       htmlToShow += '<h6 class="task-item-content"><i> Due: ' + task.deadline + '</i></h6>';
@@ -93,14 +125,10 @@ $(document).ready(function () {
       }
       htmlToShow += completeButtonHtml;
       htmlToShow += '</div></div></div></div>';
-
-      
     }
     $('#task-item-div').html(htmlToShow);
 
-    // Change the color
-    for (i in tasksBeingViewed) {
-    }
+
     // Add click listenders for buttons 
     for (i in tasksBeingViewed) {
 
@@ -162,8 +190,55 @@ $(document).ready(function () {
         });
       }(task, i)) 
      } 
-
   }
+
+  // Apply filters if apply filter button is pressed
+  $('#apply-filter-button').on('click', function () {
+    // Get the value of the complete filter and set filter conditions accordingly 
+    var completeFilterValue = $('#complete-filter').val();
+    if (completeFilterValue === 'All') {
+      hasCompleteFilter = false;
+    } else if (completeFilterValue === 'Complete') {
+      hasCompleteFilter = true;
+      completeFilter = true;
+    } else if (completeFilterValue === 'Incomplete') {
+      hasCompleteFilter = true;
+      completeFilter = false;
+    }
+
+    // Get the value of the priority filter and set filter conditions accordingly 
+    var priorityFilterValue = $('#priority-filter').val();
+    if (priorityFilterValue === 'All') {
+      hasPriorityFilter = false;
+    } else if (priorityFilterValue === 'High') {
+      hasPriorityFilter = true;
+      priorityFilter = 'High';
+    } else if (priorityFilterValue === 'Medium') {
+      hasPriorityFilter = true;
+      priorityFilter = 'Medium';
+    } else if (priorityFilterValue === 'Low') {
+      hasPriorityFilter = true;
+      priorityFilter = 'Low';
+    } 
+
+    // Get the value of the category filter and set filter conditions accordingly 
+    var categoryFilterValue = $('#category-filter').val();
+    if (categoryFilterValue === 'All') {
+      hasCategoryFilter = false;
+    } else if (categoryFilterValue === 'School') {
+      hasCategoryFilter = true;
+      categoryFilter = 'School';
+    } else if (categoryFilterValue === 'Work') {
+      hasCategoryFilter = true;
+      categoryFilter = 'Work';
+    } else if (categoryFilterValue === 'Personal') {
+      hasCategoryFilter = true;
+      categoryFilter = 'Personal';
+    } 
+
+    // Refresh views
+    renderTasks();
+  });
 
   // Show today's tasks
   $('#today-task-button').on('click', function () {
@@ -210,29 +285,26 @@ $(document).ready(function () {
         // Clear any inputs 
         $('#description-input').val('');
         $('#collaborators-input').val('');
+        $('#err-message').html('');
         setDeadlineToToday();
+        // Add the new task to the relevent list of tasks, in the correct sorted order
+        var newTask = data.task; 
+        var todaysDateString = formatDateString(new Date()); 
+        var taskDateString = newTask.deadline;
+        if (taskDateString < todaysDateString) {
+          previousTasks.push(newTask);
+          previousTasks.sort((a, b) => b.deadline.localeCompare(a.deadline));
+        } else if (taskDateString > todaysDateString) {
+          futureTasks.push(newTask);
+          futureTasks.sort((a, b) => a.deadline.localeCompare(b.deadline));
+        } else {
+          todaysTasks.unshift(newTask);
+        }
+        renderTasks();
       }
       else {
         $('#err-message').text('ERROR: ' + data.err);
       }
     });
   });
-
-/*
------------------------------------------------------------------------------------------------------
-THIS STUFF BELOW IS FOR DEBUGGING - REMOVE OUT BEFORE SUBMISSION
------------------------------------------------------------------------------------------------------
-*/
-// TESTING - TODO DELETE
-   $('#testBtn').on('click', function () {
-    console.log('tootl')/*
-    $.post('api/toggleTaskCompletion', {tid: '5c049a26663b95720fd6f751'}, function(data) {
-      if (data.status === 'ok') {
-        $('.modal').css('display', 'none');
-      }
-      else {
-        $('#err-message').text('ERROR: ' + data.err);
-      }
-    }); */
-  })
 });
