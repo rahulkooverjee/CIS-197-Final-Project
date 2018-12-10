@@ -38,7 +38,7 @@ $(document).ready(function () {
       type: 'GET',
       success: function(res) {
         todaysTasks = res;
-        renderTasks();
+        renderTasks(); // Show today's tasks
       }
     });
     $.ajax({
@@ -112,6 +112,14 @@ $(document).ready(function () {
       htmlToShow += '<h6 class="task-item-content"><i> Due: ' + task.deadline + '</i></h6>';
       htmlToShow += '<h5 class="task-item-content"><i>Priority: </i>' +  task.priority + '</h5>';
       htmlToShow += '<h5 class="task-item-content"><i>Category: </i>' +  task.category + '</h5>';
+      // Show collaborators if there are other people too (i.e. not just current user)
+      if (task.users.length > 1) {
+        var collaborators = ''; 
+        for (j in task.users) {
+          collaborators += task.users[j] + ' ';
+        }
+        htmlToShow += '<h5 class="task-item-content"><i>Collaborators: </i>' +  collaborators + '</h5>';
+      }  
       htmlToShow += '<div class="task-item-controls" id="task-item-controls-' + task._id + '">';
       htmlToShow += '<div class="row header-row task-status-row">';
       htmlToShow += '<div class="col-md-6" style="text-align:left">';
