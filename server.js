@@ -9,7 +9,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session');
-var path=require('path');
+var path = require('path');
 var mongoose = require('mongoose');
 var Task = require('./models/task');
 var isAuthenticated = require('./middlewares/isAuthenticated');
@@ -18,17 +18,17 @@ var isAuthenticated = require('./middlewares/isAuthenticated');
 var app = express();
 
 // Instantiate a mongoose connect call
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/project')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/project');
 
 // Set the express view engine to take care of ejs within html files
 app.engine('html', require('ejs').__express);
 app.set('view engine', 'html');
 
 // Let express know some URLs are only meant to load static assets
-app.use('/static', express.static(path.join(__dirname, 'static')))
+app.use('/static', express.static(path.join(__dirname, 'static')));
 
 // Set up body parser
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Set up cookie session
 app.use(cookieSession({
@@ -43,12 +43,12 @@ Routes
 -----------------------------------------------------------------------------------------------------
 */
 // set up routes
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Get route for login / signup page, which shows by default
 app.get('/', function (req, res, next) {
   if (req.query.invalidAccess) {
-    res.render('login', { err: "Please login before accessing other URLs!" } );
+    res.render('login', { err: 'Please login before accessing other URLs!' } );
   } else {
     res.render('login', { err: null } );
   }
@@ -68,5 +68,5 @@ var apiRoutes = require('./routes/api.js');
 app.use('/api', apiRoutes);
 
 app.listen(process.env.PORT || 3000, function () {
-  console.log('App listening on port ' + (process.env.PORT || 3000))
-})
+  console.log('App listening on port ' + (process.env.PORT || 3000));
+});

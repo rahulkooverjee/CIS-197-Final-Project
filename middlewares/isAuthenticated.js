@@ -10,8 +10,8 @@ var isAuthenticated = function (req, res, next) {
   if (req.session.user) {
     next();
   } else {
-    res.redirect("/?invalidAccess=true")
+    res.redirect('/?invalidAccess=true');
   }
-}
+};
 
 module.exports = isAuthenticated;

@@ -7,20 +7,22 @@
 
 $(document).ready(function () {
 
-  // Lists of tasks
+  /*
+  -----------------------------------------------------------------------------------------------------
+  Variables Declerations
+  -----------------------------------------------------------------------------------------------------
+  */
+  // Lists of previous, current, and future tasks
   var todaysTasks = [];
-  var previousTasks = []; 
+  var previousTasks = [];
   var futureTasks = []; 
+  
+  // Hacky, but we'll use a string to track which tasks to show
+  var mode = 'today'; 
 
-  var mode = 'today'; // Hacky, but we'll use a string to track which tasks to show
-
-  // Get the tasks from the DB initially, then get them again every 5 seconds 
-  getTasks()
-  setDeadlineToToday();
-
-  // Set the max height of the tasks box to be 90% of the browser window size
-  $('#tasks-box').css('max-height', $(window).height() * 0.85);
-  $('#tasks-box').css('overflow', 'scroll');
+  // Also hacky, but use the ejs content to get the email of the user logged in
+  var userLoggedIn = $('#task-header').text();
+  userLoggedIn = userLoggedIn.substring(8, userLoggedIn.length);
 
   // Booleans for filiters
   var hasCompleteFilter = false;
@@ -30,54 +32,60 @@ $(document).ready(function () {
   var hasCategoryFilter = false;
   var categoryFilter = '';
 
+  /*
+  -----------------------------------------------------------------------------------------------------
+  Initial function calls when the page loads
+  -----------------------------------------------------------------------------------------------------
+  */
+  getTasks(); // Get the tasks from the DB initially
+  setDeadlineToToday(); // Set deadline of modal to be today
 
+  // Set the max height of the tasks box to be 90% of the browser window size
+  $('#tasks-box').css('max-height', $(window).height() * 0.85);
+  $('#tasks-box').css('overflow', 'scroll');
+
+  /*
+  -----------------------------------------------------------------------------------------------------
+  Function declerations
+  -----------------------------------------------------------------------------------------------------
+  */
   // Function that gets all tasks from the database - today's, previous, and future 
-  function getTasks() {
-    $.ajax({
-      url: '/api/getTodaysTasks',
-      type: 'GET',
-      success: function(res) {
-        todaysTasks = res;
-        renderTasks(); // Show today's tasks
-      }
+  function getTasks () {
+    $.get('/api/getTodaysTasks', function (data) {
+      todaysTasks = data;
+      renderTasks(); // Show today's tasks
     });
-    $.ajax({
-      url: '/api/getPreviousTasks',
-      type: 'GET',
-      success: function(res) {
-        previousTasks = res;
-        // Sort so the MOST recent is first 
-        previousTasks.sort((a, b) => b.deadline.localeCompare(a.deadline));
-      }
+    $.get('/api/getPreviousTasks', function (data) {
+      previousTasks = data;
+      // Sort so the MOST recent is first 
+      previousTasks.sort((a, b) => b.deadline.localeCompare(a.deadline));
     });
-    $.ajax({
-      url: '/api/getFutureTasks',
-      type: 'GET',
-      success: function(res) {
-        futureTasks = res;
-        // Sort so the LEAST recent is first 
-        futureTasks.sort((a, b) => a.deadline.localeCompare(b.deadline));
-      }
-    })
-  };
+    $.get('/api/getFutureTasks', function (data) {
+      futureTasks = data;
+      // Sort so the LEAST recent is first 
+      futureTasks.sort((a, b) => a.deadline.localeCompare(b.deadline));
+    });
+  }
 
   // Set the deadline input on the add task form to be today's date by default 
-  function setDeadlineToToday() {
+  function setDeadlineToToday () {
     var today = new Date();
     $('#deadline-input').val(formatDateString(today));
   }
 
-  function formatDateString(date) {
+  // Formats a date as YYYY-MM-DD
+  function formatDateString (date) {
     var month = (date.getMonth() + 1);               
     var day = date.getDate();
-    if (month < 10) month = "0" + month;
-    if (day < 10) day = "0" + day;
+    if (month < 10) month = '0' + month;
+    if (day < 10) day = '0' + day;
     var dateString = date.getFullYear() + '-' + month + '-' + day;
-    return dateString
+    return dateString;
   }
 
   // Function to render tasks
-  function renderTasks() {
+  function renderTasks () {
+    // Set which tasks to render
     var tasksBeingViewed = [];
     if (mode === 'future') tasksBeingViewed = futureTasks;
     if (mode === 'today') tasksBeingViewed = todaysTasks;
@@ -90,9 +98,10 @@ $(document).ready(function () {
       return;
     }
 
+    // Create HTML to add to the page
     var htmlToShow = '';
-    for (i in tasksBeingViewed) {
-      var task = tasksBeingViewed[i];
+    for (let i in tasksBeingViewed) {
+      let task = tasksBeingViewed[i];
       // Process filiters 
       // Complete filter 
       if (hasCompleteFilter && task.complete !== completeFilter) {
@@ -110,15 +119,17 @@ $(document).ready(function () {
       htmlToShow += '<div class="task-item" id="task-item-' + task._id + '">';
       htmlToShow += '<h4 class="task-description task-item-content">' + task.description + '</h4>';
       htmlToShow += '<h6 class="task-item-content"><i> Due: ' + task.deadline + '</i></h6>';
-      htmlToShow += '<h5 class="task-item-content"><i>Priority: </i>' +  task.priority + '</h5>';
-      htmlToShow += '<h5 class="task-item-content"><i>Category: </i>' +  task.category + '</h5>';
+      htmlToShow += '<h5 class="task-item-content"><i>Priority: </i>' + task.priority + '</h5>';
+      htmlToShow += '<h5 class="task-item-content"><i>Category: </i>' + task.category + '</h5>';
       // Show collaborators if there are other people too (i.e. not just current user)
       if (task.users.length > 1) {
         var collaborators = ''; 
-        for (j in task.users) {
+        for (let j in task.users) {
+          // Skip the logged in user
+          if (task.users[j] === userLoggedIn) continue;
           collaborators += task.users[j] + ' ';
         }
-        htmlToShow += '<h5 class="task-item-content"><i>Collaborators: </i>' +  collaborators + '</h5>';
+        htmlToShow += '<h5 class="task-item-content"><i>Collaborators: </i>' + collaborators + '</h5>';
       }  
       htmlToShow += '<div class="task-item-controls" id="task-item-controls-' + task._id + '">';
       htmlToShow += '<div class="row header-row task-status-row">';
@@ -136,27 +147,21 @@ $(document).ready(function () {
     }
     $('#task-item-div').html(htmlToShow);
 
-
     // Add click listenders for buttons 
-    for (i in tasksBeingViewed) {
-
-      
-
-      var task = tasksBeingViewed[i];
+    for (let i in tasksBeingViewed) {
+      let task = tasksBeingViewed[i];
       if (task.complete) {
         // Change the background color of complete tasks 
         $('#task-item-' + task._id).css('background-color', 'rgba(0,0,0,.5)');
         $('#task-item-controls-' + task._id).css('background-color', 'rgba(0,0,0,.5)');
       }
-      (function(task, i){
-        
-        /**
-         * Delete  button
-         */
+      // NOTE - this needs to be done this way to avoid closure issues
+      (function (task, i) {
+        // Delete button
         $('#delete-task-btn-' + task._id).on('click', function () {
-          $.post('api/deleteTask', {'tid': task._id}, function(data) {
+          $.post('api/deleteTask', {tid: task._id}, function (data) {
             if (data.status === 'ok') {
-              // Remove the deleted task from the list
+              // Remove the deleted task from the list and re-render
               if (mode === 'future') {
                 futureTasks.splice(i, 1);
                 renderTasks();
@@ -173,14 +178,12 @@ $(document).ready(function () {
           });
         });
 
-
-        
-        // Handle posting comments
+        // Toggle task complete button
         $('#complete-task-btn-' + task._id).on('click', function () {
           // Toggle completion
-          $.post('api/toggleTaskCompletion', {'tid': task._id}, function(data) {
+          $.post('api/toggleTaskCompletion', {tid: task._id}, function (data) {
             if (data.status === 'ok') {
-              // Remove the deleted task from the list
+              // Edit the toggled task list and rerender
               if (mode === 'future') {
                 futureTasks[i].complete = !futureTasks[i].complete;
                 renderTasks();
@@ -196,12 +199,12 @@ $(document).ready(function () {
             }
           });
         });
-      }(task, i)) 
-     } 
+      }(task, i)); 
+    } 
   }
 
-  // Apply filters if apply filter button is pressed
-  $('#apply-filter-button').on('click', function () {
+  // Function to apply filters
+  function applyFilters () {
     // Get the value of the complete filter and set filter conditions accordingly 
     var completeFilterValue = $('#complete-filter').val();
     if (completeFilterValue === 'All') {
@@ -246,6 +249,17 @@ $(document).ready(function () {
 
     // Refresh views
     renderTasks();
+  }
+
+
+  /*
+  -----------------------------------------------------------------------------------------------------
+  Add onClick listenders to the various buttons
+  -----------------------------------------------------------------------------------------------------
+  */
+  // Apply filters if apply filter button is pressed
+  $('#apply-filter-button').on('click', function () {
+    applyFilters();
   });
 
   // Show today's tasks
@@ -262,31 +276,31 @@ $(document).ready(function () {
 
   // Show future tasks
   $('#future-task-button').on('click', function () {
-    mode = 'future'
+    mode = 'future';
     renderTasks();
   });
 
   // Open the add task model
   $('#add-task-button').on('click', function () {
     $('.modal').css('display', 'block');
-  })
+  });
 
   // Close the add task model
   $('#cancel-task-button').on('click', function () {
     $('.modal').css('display', 'none');
-  })
+  });
 
   // Submit the add task form when add task button is pressed
-  $('#add-task-form').submit(function(e) {
+  $('#add-task-form').submit(function (e) {
     e.preventDefault(); // prevents refresh
     var taskDetails = {
       description: $('#description-input').val(),
       deadline: $('#deadline-input').val(),
       priority: $('input[name=priority]:checked', '#add-task-form').val(),
       category: $('#category-input').val(),
-      collaborators: $('#collaborators-input').val(),
-    }
-    $.post('api/addTask', taskDetails, function(data) {
+      collaborators: $('#collaborators-input').val()
+    };
+    $.post('api/addTask', taskDetails, function (data) {
       if (data.status === 'ok') {
         // Hide the modal
         $('.modal').css('display', 'none');
@@ -298,7 +312,6 @@ $(document).ready(function () {
         // Add the new task to the relevent list of tasks, in the correct sorted order
         var newTask = data.task; 
         var todaysDateString = formatDateString(new Date()); 
-        
         var taskDateString = newTask.deadline;
         if (taskDateString < todaysDateString) {
           previousTasks.push(newTask);
@@ -310,8 +323,7 @@ $(document).ready(function () {
           todaysTasks.unshift(newTask);
         }
         renderTasks();
-      }
-      else {
+      } else {
         $('#err-message').text('ERROR: ' + data.err);
       }
     });

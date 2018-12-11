@@ -25,38 +25,6 @@ body {
 	font-size: 14pt;
 }
 
-
-/*
------------------------------------------------------------------------------------------------------
-STYLES TO SET UP A FOOTER THAT STICKS TO THE BOTTOM OF THE PAGE 
------------------------------------------------------------------------------------------------------
-*/
-.container {
-   min-height:100%;
-   position:relative;
-}
-
-header {
-   background:#ff0;
-   padding:10px;
-}
-
-body {
-   padding-bottom:35px;   /* Height of the footer */
-}
-
-footer {
-   position:absolute;
-   font-size: 15pt;
-   font-style: italic;
-   color: white;
-   bottom:0;
-   width:100%;
-   height:30px;   /* Height of the footer */
-   background: #315da5;
-}
-
-
 /*
 -----------------------------------------------------------------------------------------------------
 STYLES FOR ELEMENTS I DEFINED MYSELF
@@ -133,9 +101,11 @@ STYLES FOR ELEMENTS I DEFINED MYSELF
 	font-size: 35pt;
 }
 
-/**
-* Task box
-*/ 
+/*
+-----------------------------------------------------------------------------------------------------
+STYLES SHOWING TASKS
+-----------------------------------------------------------------------------------------------------
+*/
 .tasks-box {
 	background-color: white;
 	height: auto;
@@ -176,6 +146,7 @@ STYLES FOR ELEMENTS I DEFINED MYSELF
 
 /* TODO */
 
+
 .task-item-content {
 	margin-left: 5px;	
 	font-weight: 400;
@@ -209,8 +180,10 @@ STYLES FOR ELEMENTS I DEFINED MYSELF
 }
 
 
-/**
-* Header styles
+/*
+-----------------------------------------------------------------------------------------------------
+STYLES FOR THE HEADER / NAV-BAR
+-----------------------------------------------------------------------------------------------------
 */
 .navbar {
 	height: 60px;

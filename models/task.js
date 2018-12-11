@@ -4,7 +4,7 @@
  * Author: Rahul Kooverjee for his CIS 197 Final Project Fall 2018
  *
  */
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 
 const taskSchema = new mongoose.Schema({
   users: { type: [String] },
@@ -13,6 +13,6 @@ const taskSchema = new mongoose.Schema({
   priority: { type: String }, 
   category: { type: String },  
   complete: { type: Boolean }
-})
+});
 
 module.exports = mongoose.model('Task', taskSchema);

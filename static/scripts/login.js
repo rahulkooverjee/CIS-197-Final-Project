@@ -7,8 +7,8 @@
 
 $(document).ready(function () {
   // Set the mode to be login (as opposed to sign up) be default 
-  loginMode = true;
-  var inputBoxTitle = 'Login';;
+  var loginMode = true;
+  var inputBoxTitle = 'Login';
   var toggleButtonText = 'Sign Up Instead';
 
   // Toggle between login and signup modes when the toggle button is clicked 
@@ -26,10 +26,10 @@ $(document).ready(function () {
     $('#form-title').text(inputBoxTitle);
     $('#toggle-button').text(toggleButtonText);
     $('#submit-button').val(inputBoxTitle);
-  })
+  });
 
   // Post the username and password details 
-  $('#login-signup-form').submit(function(e) {
+  $('#login-signup-form').submit(function (e) {
     e.preventDefault(); // prevents refresh
     // If trying to login 
     if (loginMode) {
@@ -38,14 +38,12 @@ $(document).ready(function () {
       routeToPostTo = 'account/signup';
     }
     // Post to the API route, if succesful then redirect to the homepage
-    $.post(routeToPostTo, $("#login-signup-form").serialize(), function(data) {
+    $.post(routeToPostTo, $('#login-signup-form').serialize(), function (data) {
       if (data.status === 'ok') {
-        window.location = "/home"
-      }
-      else {
+        window.location = '/home';
+      } else {
         $('#err-message').text('ERROR: ' + data.err);
       }
     });
   });
-
 });

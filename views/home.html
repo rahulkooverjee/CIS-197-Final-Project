@@ -3,8 +3,8 @@
 <div id="container">
 	<head>
 		<title>Productiv</title>
+		<!-- load styles -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
-
 		<link rel="stylesheet" type="text/css" href="/static/styles/styles.css"/>
 		<!-- load scripts -->
 		<script src="/static/scripts/lib/jquery.min.js"></script>
@@ -29,10 +29,9 @@
 		<div class="modal-body row">
 			<div class="col-md-9">
 				<!-- First column -->
-
 				<div class="tasks-box" id="tasks-box">
 					<div class="row header-row">
-						<h2 id="task-header"><b>Welcome <%= user %>.</b></h2>
+						<h2 id="task-header"><b>Welcome <%= user %></b></h2>
 					</div>
 
 					<div class="row header-row">
@@ -97,7 +96,7 @@
 
 
 
-	<!-- modal for adding new question -->
+	<!-- modal for adding new question - hidden initially -->
 	<div class="modal" style="display:none">
 		<div class="modal-area">
 			<br>
@@ -154,7 +153,6 @@
 	</div>
 </div>
 </body>
-
 </div>
 </html>
 
