@@ -89,7 +89,6 @@ router.post('/addTask', isAuthenticated, function (req, res, next) {
 // Get route to get today's tasks, only works if a user is already signed in!
 router.get('/getTodaysTasks', isAuthenticated, function (req, res, next) {
   var todaysDateString = formatDateString(new Date());
-  console.log(todaysDateString)
   Task.find({ users: { $in : [req.session.user]}, deadline: todaysDateString }, function (err, results) {
     if (!err) {
       res.json(results);

@@ -298,10 +298,8 @@ $(document).ready(function () {
         // Add the new task to the relevent list of tasks, in the correct sorted order
         var newTask = data.task; 
         var todaysDateString = formatDateString(new Date()); 
-
+        
         var taskDateString = newTask.deadline;
-        alert(taskDateString);
-        alert(todaysDateString);
         if (taskDateString < todaysDateString) {
           previousTasks.push(newTask);
           previousTasks.sort((a, b) => b.deadline.localeCompare(a.deadline));
